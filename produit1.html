@@ -28,6 +28,12 @@
             </div>
         </nav>
 
+        <a href="index.html" 
+        onclick="gtag('event','back_home');"
+        class="btn btn-secondary mb-3">
+        ← Retour accueil
+        </a>
+
         <!-- Product Details -->
         <section class="showcase">
             <div class="container-fluid p-5">
@@ -49,6 +55,12 @@
                         class="btn btn-danger">
                         Acheter maintenant
                         </button>
+
+                        <button 
+                        onclick="gtag('event','add_to_favorites',{ 'produit':'Montre ActiveX' });"
+                        class="btn btn-warning">
+                        Ajouter aux favoris
+                        </button>
                     </div>
                 </div>
             </div>
@@ -63,5 +75,17 @@
         </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+        gtag('event','view_product',{
+        'produit':'Montre ActiveX'
+        });
+        </script>
+        <script>
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 500) {
+                gtag('event','scroll_page');
+            }
+        });
+        </script>
     </body>
 </html>
