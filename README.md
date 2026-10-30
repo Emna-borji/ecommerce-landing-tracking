@@ -1,69 +1,84 @@
-# [Start Bootstrap - Landing Page](https://startbootstrap.com/theme/landing-page/)
+# ecommerce-landing-tracking
 
-[Landing Page](https://startbootstrap.com/theme/landing-page/) is a multipurpose landing page template for [Bootstrap](https://getbootstrap.com/) created by [Start Bootstrap](https://startbootstrap.com/).
+Landing e-commerce multi-produits avec **instrumentation Google Analytics 4** du parcours d'achat
+(view / add_to_cart / add_to_favorites / purchase_click / scroll / back_home).
 
-## Preview
+## Objectif
+Démontrer la mise en place d'un **tracking GA4** complet sur un parcours e-commerce fictif :
+page d'accueil → fiche produit → actions utilisateur (panier, favoris, achat), afin d'analyser
+le comportement utilisateur dans l'interface Google Analytics.
 
-[![Landing Page Preview](https://assets.startbootstrap.com/img/screenshots/themes/landing-page.png)](https://startbootstrap.github.io/startbootstrap-landing-page/)
+## Données
+Pas de base de données. Les événements sont envoyés à **Google Analytics 4** via `gtag.js`
+(propriété `G-3ZZZ2244QL`), consultables dans l'interface GA du propriétaire du tag.
 
-**[View Live Preview](https://startbootstrap.github.io/startbootstrap-landing-page/)**
+3 produits fictifs présentés sur la landing et chacun sur sa page détail :
+- Montre Connectée ActiveX (199 €)
+- Écouteurs Sans Fil Pro
+- Smartphone Ultra 12
 
-## Status
+## Méthode
+Code HTML/CSS/JS statique :
+- `index.html` : landing (masthead, 3 features, 3 showcases cliquables vers les fiches produit,
+  testimonials, formulaire d'inscription, footer).
+- `produit1.html`, `produit2.html`, `produit3.html` : fiches produit avec 3 boutons d'action
+  (`Ajouter au panier`, `Acheter maintenant`, `Ajouter aux favoris`) qui déclenchent chacun un
+  événement GA4 custom via `onclick="gtag('event', ...)"`.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/StartBootstrap/startbootstrap-landing-page/master/LICENSE)
-[![npm version](https://img.shields.io/npm/v/startbootstrap-landing-page.svg)](https://www.npmjs.com/package/startbootstrap-landing-page)
+Événements GA4 trackés :
 
-## Download and Installation
+| Événement | Déclencheur | Paramètres |
+|---|---|---|
+| `view_product` | Chargement d'une page produit | `{produit}` |
+| `add_to_cart` | Clic "Ajouter au panier" | `{produit}` |
+| `purchase_click` | Clic "Acheter maintenant" | `{produit}` |
+| `add_to_favorites` | Clic "Ajouter aux favoris" | `{produit}` |
+| `back_home` | Clic "← Retour accueil" | — |
+| `scroll_page` | Scroll vertical > 500 px | — |
 
-To begin using this template, choose one of the following options to get started:
+> **Important** : les boutons panier/favoris sont **des points de mesure**, pas des
+> fonctionnalités e-commerce : aucune persistance (ni localStorage, ni backend) n'est faite,
+> l'ajout au panier déclenche l'événement GA et c'est tout.
 
-* [Download the latest release on Start Bootstrap](https://startbootstrap.com/theme/landing-page/)
-* Install via npm: `npm i startbootstrap-landing-page`
-* Clone the repo: `git clone https://github.com/StartBootstrap/startbootstrap-landing-page.git`
-* [Fork, Clone, or Download on GitHub](https://github.com/StartBootstrap/startbootstrap-landing-page)
+## Stack
+- HTML5, CSS3, Bootstrap 5.2.3 (via CDN)
+- Bootstrap Icons 1.5.0, Google Fonts (Lato) — CDN
+- **Google Analytics 4** (`gtag.js`)
+- Chaîne de build Pug/Sass fournie par le template (optionnelle) : Pug 3, Sass 1.60,
+  browser-sync, autoprefixer, postcss
 
-## Usage
+Base graphique : [Start Bootstrap - Landing Page v6.0.6](https://startbootstrap.com/theme/landing-page/)
+par David Miller / Start Bootstrap LLC (licence MIT), personnalisée (branding, i18n FR, pages
+produit, instrumentation GA).
 
-### Basic Usage
+## Résultats
+Projet pédagogique : captures d'écran de l'interface GA4 montrent les événements custom et
+les rapports par produit. Les parcours sont mesurés mais l'app n'est pas un vrai e-commerce
+(voir note ci-dessus).
 
-After downloading, simply edit the HTML and CSS files included with `dist` directory. These are the only files you need to worry about, you can ignore everything else! To preview the changes you make to the code, you can open the `index.html` file in your web browser.
+## Comment lancer
+Fichiers HTML statiques, aucune build requise pour prévisualiser :
 
-### Advanced Usage
+```bash
+# Ouvre simplement index.html dans un navigateur
+# ou lance un serveur local pour éviter les restrictions file://
 
-Clone the source files of the theme and navigate into the theme's root directory. Run `npm install` and then run `npm start` which will open up a preview of the template in your default browser, watch for changes to core template files, and live reload the browser when changes are saved. You can view the `package.json` file to see which scripts are included.
+python -m http.server 8080
+# puis http://localhost:8080
+```
 
-#### npm Scripts
+Pour utiliser la chaîne de build Pug/Sass du template :
 
-* `npm run build` builds the project - this builds assets, HTML, JS, and CSS into `dist`
-* `npm run build:assets` copies the files in the `src/assets/` directory into `dist`
-* `npm run build:pug` compiles the Pug located in the `src/pug/` directory into `dist`
-* `npm run build:scripts` brings the `src/js/scripts.js` file into `dist`
-* `npm run build:scss` compiles the SCSS files located in the `src/scss/` directory into `dist`
-* `npm run clean` deletes the `dist` directory to prepare for rebuilding the project
-* `npm run start:debug` runs the project in debug mode
-* `npm start` or `npm run start` runs the project, launches a live preview in your default browser, and watches for changes made to files in `src`
+```bash
+npm install
+npm start           # build + live preview
+npm run build       # build dans dist/
+```
 
-You must have npm installed in order to use this build environment.
+### Changer le tag GA
+Le tag ID `G-3ZZZ2244QL` est hardcodé dans :
+- `index.html` (ligne du script gtag)
+- `produit1.html`, `produit2.html`, `produit3.html` (identiques)
+- `dist/index.html`
 
-## Bugs and Issues
-
-Have a bug or an issue with this template? [Open a new issue](https://github.com/StartBootstrap/startbootstrap-landing-page/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](https://startbootstrap.com/theme/landing-page/).
-
-## About
-
-Start Bootstrap is an open source library of free Bootstrap templates and themes. All of the free templates and themes on Start Bootstrap are released under the MIT license, which means you can use them for any purpose, even for commercial projects.
-
-* <https://startbootstrap.com>
-* <https://twitter.com/SBootstrap>
-
-Start Bootstrap was created by and is maintained by **[David Miller](https://davidmiller.io/)**.
-
-* <https://davidmiller.io>
-* <https://twitter.com/davidmillerhere>
-* <https://github.com/davidtmiller>
-
-Start Bootstrap is based on the [Bootstrap](https://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
-
-## Copyright and License
-
-Copyright 2013-2023 Start Bootstrap LLC. Code released under the [MIT](https://github.com/StartBootstrap/startbootstrap-landing-page/blob/master/LICENSE) license.
+Remplace la valeur par ton propre tag GA4 avant de forker.
